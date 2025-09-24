@@ -1,0 +1,307 @@
+proxies:
+
+proxy-providers:
+  AP1:
+    type: http
+    ## url: 你的代理链接
+    path: ./koolshare/merlinclash/proxies/AP1.yaml
+    interval: 86400
+    health-check:
+      enable: true
+      url: http://www.apple.com/library/test/success.html
+      interval: 600
+    override:
+      additional-prefix: "[AP1]"
+      
+  AP2:
+    type: http
+    ## url: 你的代理链接
+    path: ./koolshare/merlinclash/proxies/AP2.yaml
+    interval: 86400
+    health-check:
+      enable: true
+      url: http://www.apple.com/library/test/success.html
+      interval: 600
+    override:
+      additional-prefix: "[AP2]"
+
+proxy-groups:
+  # 🌍 地区节点组
+  - name: 🇺🇸 美国节点
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    filter: '^(?=.*((?i)🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(\b(US|United States)\b))).*$'
+    include-all: true
+
+  - name: 🇯🇵 日本节点
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    filter: '^(?=.*((?i)🇯🇵|日本|川日|东京|大阪|泉日|埼玉|(\b(JP|Japan)\b))).*$'
+    include-all: true
+
+  - name: 🇰🇷 韩国节点
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    filter: '^(?=.*((?i)🇰🇷|韩国|韓|首尔|(\b(KR|Korea)\b))).*$'
+    include-all: true
+
+  - name: 🇸🇬 新加坡节点
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    filter: '^(?=.*((?i)🇸🇬|新加坡|狮|(\b(SG|Singapore)\b))).*$'
+    include-all: true
+
+  - name: 🇭🇰 香港节点
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    filter: '^(?=.*((?i)🇭🇰|香港|(\b(HK|Hong)\b))).*$'
+    include-all: true
+
+  # ⚡ 基础选择组
+  - name: ⚡ 自动选择
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    include-all: true
+
+  - name: 🚀 手动选择
+    type: select
+    include-all: true
+
+  # 🎯 应用专用组
+  - name: 🤖 ChatGPT
+    type: select
+    proxies: &common_proxies
+      - 🇺🇸 美国节点
+      - 🇯🇵 日本节点
+      - 🇰🇷 韩国节点
+      - 🇸🇬 新加坡节点
+      - 🇭🇰 香港节点
+      - ⚡ 自动选择
+      - 🚀 手动选择
+      - DIRECT
+
+  - name: 🔮 Gemini
+    type: select
+    proxies: *common_proxies
+
+  - name: 💻 Github
+    type: select
+    proxies: *common_proxies
+           
+  - name: 📹 Youtube
+    type: select
+    proxies: *common_proxies
+           
+  - name: 🔍 Google
+    type: select
+    proxies: *common_proxies
+            
+  - name: 🎬 Netflix
+    type: select
+    proxies: *common_proxies
+
+  - name: ✈️ Telegram
+    type: select
+    proxies: *common_proxies
+
+  - name: 🎵 抖音短视频
+    type: select
+    proxies: &direct_first
+      - DIRECT
+      - 🇺🇸 美国节点
+      - 🇯🇵 日本节点
+      - 🇰🇷 韩国节点
+      - 🇸🇬 新加坡节点
+      - 🇭🇰 香港节点
+      - ⚡ 自动选择
+      - 🚀 手动选择
+
+  - name: 🌐 代理网站
+    type: select
+    proxies: *common_proxies
+
+  - name: 🎮 代理游戏
+    type: select
+    proxies: *common_proxies
+
+  - name: 🍎 Apple
+    type: select
+    proxies: *direct_first
+      
+  - name: 💠 Microsoft
+    type: select
+    proxies: *direct_first
+
+  - name: 🐟 漏网之鱼
+    type: select
+    proxies: *common_proxies
+
+
+rules:
+  # 🏠 本地网络
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+  - IP-CIDR,198.18.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve  
+  - IP-CIDR6,::1/128,DIRECT,no-resolve
+  - IP-CIDR6,fc00::/7,DIRECT,no-resolve
+  - IP-CIDR6,fd00::/8,DIRECT,no-resolve
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
+
+  # 🚫 完整屏蔽Adobe联网验证和更新
+  - DOMAIN-SUFFIX,adobe.com,REJECT
+  - DOMAIN-SUFFIX,adobe.io,REJECT
+  - DOMAIN-SUFFIX,adobelogin.com,REJECT
+  - DOMAIN-SUFFIX,adobeoobe.com,REJECT
+  - DOMAIN-SUFFIX,adobe-identity.com,REJECT
+  - DOMAIN-SUFFIX,adobesc.com,REJECT
+  - DOMAIN-SUFFIX,adobedtm.com,REJECT
+  - DOMAIN-SUFFIX,adobe.ly,REJECT
+  
+  # Adobe许可证验证服务器
+  - DOMAIN-SUFFIX,lcs-cops.adobe.io,REJECT
+  - DOMAIN-SUFFIX,lc.adobe.com,REJECT
+  - DOMAIN-SUFFIX,activate.adobe.com,REJECT
+  - DOMAIN-SUFFIX,practivate.adobe.com,REJECT
+  - DOMAIN-SUFFIX,ereg.adobe.com,REJECT
+  - DOMAIN-SUFFIX,activate-sea.adobe.com,REJECT
+  - DOMAIN-SUFFIX,wip3.adobe.com,REJECT
+  - DOMAIN-SUFFIX,3dns-3.adobe.com,REJECT
+  - DOMAIN-SUFFIX,3dns-2.adobe.com,REJECT
+  - DOMAIN-SUFFIX,adobe-dns.adobe.com,REJECT
+  - DOMAIN-SUFFIX,adobe-dns-2.adobe.com,REJECT
+  - DOMAIN-SUFFIX,adobe-dns-3.adobe.com,REJECT
+  - DOMAIN-SUFFIX,ereg.wip3.adobe.com,REJECT
+  - DOMAIN-SUFFIX,activate-sjc0.adobe.com,REJECT
+  
+  # Adobe Creative Cloud 相关
+  - DOMAIN-SUFFIX,cc-api-data.adobe.io,REJECT
+  - DOMAIN-SUFFIX,cclibraries-api.adobe.io,REJECT
+  - DOMAIN-SUFFIX,prod.acp.adobeoobe.com,REJECT
+  - DOMAIN-SUFFIX,k.sni.global.fastly.net,REJECT
+  
+  # Adobe更新服务
+  - DOMAIN-SUFFIX,swupmf.adobe.com,REJECT
+  - DOMAIN-SUFFIX,swupdl.adobe.com,REJECT
+  - DOMAIN-SUFFIX,updates.adobe.com,REJECT
+  - DOMAIN-SUFFIX,services.adobe.com,REJECT
+  
+  # Adobe遥测和分析
+  - DOMAIN-SUFFIX,omtrdc.net,REJECT
+  - DOMAIN-SUFFIX,2o7.net,REJECT
+  - DOMAIN-SUFFIX,adobedc.net,REJECT
+  - DOMAIN-SUFFIX,adobe.demdex.net,REJECT
+  - DOMAIN-SUFFIX,everest.g.doubleclick.net,REJECT
+
+  # 🚫 美图秀秀广告
+  - DOMAIN,aaid.uyunad.com,REJECT
+  - DOMAIN,adui.tg.meitu.com,REJECT
+  - DOMAIN,adshow.58.com,REJECT
+  - DOMAIN,adsystem.meitu.com,REJECT
+  
+  # 🚫 广告拦截
+  - GEOSITE,ad,REJECT
+  
+  # 🔗 直连站点
+  - GEOSITE,private,DIRECT
+  - GEOSITE,games-cn,DIRECT
+  - GEOSITE,apple-cn,DIRECT
+  
+  # 🎵 抖音短视频规则
+  - DOMAIN,lf3-static.bytednsdoc.com,🎵 抖音短视频
+  - DOMAIN,v5-dy-o-abtest.zjcdn.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,amemv.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,douyincdn.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,douyinpic.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,douyinstatic.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,douyinvod.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,idouyinvod.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,ixigua.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,ixiguavideo.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,pstatp.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,snssdk.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,toutiao.com,🎵 抖音短视频
+  
+  # ✈️ Telegram
+  - GEOIP,telegram,✈️ Telegram,no-resolve
+  - GEOSITE,telegram,✈️ Telegram
+  
+  # 🤖 ChatGPT & AI
+  - GEOSITE,ai,🤖 ChatGPT
+  - GEOSITE,onedrive,🤖 ChatGPT
+  - DOMAIN-SUFFIX,manus.im,🤖 ChatGPT
+  - DOMAIN-KEYWORD,manus,🤖 ChatGPT
+  
+  # 🔮 Gemini 规则
+  - DOMAIN,ai.google.dev,🔮 Gemini
+  - DOMAIN,alkalimakersuite-pa.clients6.google.com,🔮 Gemini
+  - DOMAIN,makersuite.google.com,🔮 Gemini
+  - DOMAIN-SUFFIX,bard.google.com,🔮 Gemini
+  - DOMAIN-SUFFIX,deepmind.com,🔮 Gemini
+  - DOMAIN-SUFFIX,deepmind.google,🔮 Gemini
+  - DOMAIN-SUFFIX,gemini.google.com,🔮 Gemini
+  - DOMAIN-SUFFIX,generativeai.google,🔮 Gemini
+  - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,🔮 Gemini
+  - DOMAIN-SUFFIX,apis.google.com,🔮 Gemini
+  - DOMAIN-KEYWORD,colab,🔮 Gemini
+  - DOMAIN-KEYWORD,developerprofiles,🔮 Gemini
+  - DOMAIN-KEYWORD,generativelanguage,🔮 Gemini
+  
+  # 💻 Github
+  - GEOSITE,github,💻 Github
+  
+  # 🎬 Netflix
+  - GEOIP,netflix,🎬 Netflix,no-resolve
+  - GEOSITE,netflix,🎬 Netflix
+  
+  # 📹 Youtube
+  - GEOIP,youtube,📹 Youtube,no-resolve
+  - GEOSITE,youtube,📹 Youtube
+  
+  # 🔍 Google
+  - GEOIP,google,🔍 Google,no-resolve
+  - GEOSITE,google,🔍 Google
+  
+  # 📘 Facebook
+  - GEOIP,facebook,🌐 代理网站,no-resolve
+  - GEOSITE,facebook,🌐 代理网站
+  
+  # 🐦 Twitter
+  - GEOIP,twitter,🌐 代理网站,no-resolve
+  - GEOSITE,twitter,🌐 代理网站
+  
+  # 🎮 游戏
+  - GEOSITE,games,🎮 代理游戏
+  
+  # 🌐 GFWList
+  - GEOSITE,proxy,🌐 代理网站
+  
+  # 🍎 Apple
+  - GEOIP,apple,🍎 Apple
+  - GEOSITE,apple,🍎 Apple
+  
+  # 💠 Microsoft
+  - GEOSITE,microsoft,💠 Microsoft
+  
+  # 🇨🇳 国内网站
+  - GEOSITE,microsoft-cn,DIRECT
+  - GEOSITE,cn,DIRECT
+  - GEOIP,CN,DIRECT,no-resolve
+  
+  # 🐟 兜底规则
+  - MATCH,🐟 漏网之鱼
