@@ -1,0 +1,348 @@
+# 适配 OpenClash 
+# 采用 whitelist DNS 模式
+# 不懂请不要乱改
+
+# ======= 全局配置 =======
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7894
+allow-lan: true
+bind-address: "*"
+ipv6: false
+unified-delay: true
+tcp-concurrent: true
+log-level: info
+find-process-mode: 'off'
+global-client-fingerprint: chrome
+keep-alive-idle: 600
+keep-alive-interval: 15
+geodata-mode: true
+geo-auto-update: true
+geo-update-interval: 168
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+# ======= 外部控制 =======
+external-controller: 0.0.0.0:9090
+secret: ""
+
+# ======= 嗅探配置 =======
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  force-domain:
+    - "+.v2ex.com"
+  skip-domain:
+    - "+.baidu.com"
+
+# ======= TUN 配置 =======
+tun:
+  enable: true
+  stack: mixed
+  dns-hijack: ["any:53", "tcp://any:53"]
+  auto-route: false
+  auto-redirect: false
+  auto-detect-interface: false
+
+# ======= DNS 配置 =======
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 28.0.0.1/8
+  fake-ip-filter-mode: whitelist
+  fake-ip-filter:
+    - 'geosite:gfw'
+    - 'geosite:proxy'
+  default-nameserver:
+    - 223.5.5.5
+  proxy-server-nameserver:
+    - https://223.5.5.5/dns-query
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+
+# ======= 代理配置 =======
+proxies:
+
+# ======= 代理提供商 =======
+proxy-providers:
+  AP1:
+    type: http
+    url: 
+    path: ./proxies/AP1.yaml
+    interval: 86400
+    health-check:
+      enable: true
+      url: http://www.apple.com/library/test/success.html
+      interval: 600
+    override:
+      additional-prefix: "[AP1]"
+      
+  AP2:
+    type: http
+    url: 
+    path: ./proxies/AP2.yaml
+    interval: 86400
+    health-check:
+      enable: true
+      url: http://www.apple.com/library/test/success.html
+      interval: 600
+    override:
+      additional-prefix: "[AP2]"
+      
+  AP3:
+    type: http
+    url: 
+    path: ./proxies/AP3.yaml
+    interval: 86400
+    health-check:
+      enable: true
+      url: http://www.apple.com/library/test/success.html
+      interval: 600
+    override:
+      additional-prefix: "[AP3]"
+
+# ======= 代理组 =======
+proxy-groups:
+  # 地区节点组
+  - name: 🇺🇸 美国节点
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    filter: '^(?=.*((?i)🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉ラ|西雅图|芝加哥|(\b(US|United States)\b))).*$'
+    include-all: true
+
+  - name: 🇯🇵 日本节点
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    filter: '^(?=.*((?i)🇯🇵|日本|川日|东京|大阪|泉日|埼玉|(\b(JP|Japan)\b))).*$'
+    include-all: true
+
+  - name: 🇰🇷 韩国节点
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    filter: '^(?=.*((?i)🇰🇷|韩国|韓|首尔|(\b(KR|Korea)\b))).*$'
+    include-all: true
+
+  - name: 🇸🇬 新加坡节点
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    filter: '^(?=.*((?i)🇸🇬|新加坡|狮|(\b(SG|Singapore)\b))).*$'
+    include-all: true
+
+  - name: 🇭🇰 香港节点
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    filter: '^(?=.*((?i)🇭🇰|香港|(\b(HK|Hong)\b))).*$'
+    include-all: true
+
+  - name: 🇹🇼 台湾节点
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    filter: '^(?=.*((?i)🇹🇼|台湾|台灣|台北|台中|新北|(\b(TW|Taiwan)\b))).*$'
+    include-all: true
+
+  # 基础选择组
+  - name: ⚡️ 自动选择
+    type: url-test
+    url: http://www.apple.com/library/test/success.html
+    interval: 600
+    tolerance: 100
+    include-all: true
+
+  - name: 🚀 手动选择
+    type: select
+    include-all: true
+
+  # 故障转移分组
+  - name: 🔯 香港故转
+    type: fallback
+    include-all: true
+    tolerance: 20
+    interval: 300
+    filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"
+
+  - name: 🔯 日本故转
+    type: fallback
+    include-all: true
+    tolerance: 20
+    interval: 300
+    filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$"
+
+  - name: 🔯 狮城故转
+    type: fallback
+    include-all: true
+    tolerance: 20
+    interval: 300
+    filter: "(?=.*(新加坡|坡|狮城|SG|Singapore))^((?!(台|日|韩|深|美)).)*$"
+
+  - name: 🔯 美国故转
+    type: fallback
+    include-all: true
+    tolerance: 20
+    interval: 300
+    filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|韩|新|日)).)*$"
+    
+  - name: 🔯 台湾故转
+    type: fallback
+    include-all: true
+    tolerance: 20
+    interval: 300
+    filter: "(?=.*(台湾|台灣|TW|Taiwan))^((?!(港|日|韩|新|美)).)*$"
+
+  # 应用专用组
+  - name: 🤖 ChatGPT
+    type: select
+    proxies: &common_proxies
+      - 🔯 美国故转
+      - 🔯 日本故转
+      - 🔯 狮城故转
+      - 🔯 香港故转
+      - 🔯 台湾故转
+      - 🇺🇸 美国节点
+      - 🇯🇵 日本节点
+      - 🇰🇷 韩国节点
+      - 🇸🇬 新加坡节点
+      - 🇭🇰 香港节点
+      - 🇹🇼 台湾节点
+      - ⚡️ 自动选择
+      - 🚀 手动选择
+      - DIRECT
+
+  - name: 🔮 Gemini
+    type: select
+    proxies: *common_proxies
+
+  - name: 💻 Github
+    type: select
+    proxies: *common_proxies
+           
+  - name: 📹 Youtube
+    type: select
+    proxies: *common_proxies
+           
+  - name: 🔍 Google
+    type: select
+    proxies: *common_proxies
+            
+  - name: 🎬 Netflix
+    type: select
+    proxies: *common_proxies
+
+  - name: ✈️ Telegram
+    type: select
+    proxies: *common_proxies
+
+  - name: 🎵 抖音短视频
+    type: select
+    proxies: &direct_first
+      - DIRECT
+      - 🔯 美国故转
+      - 🔯 日本故转
+      - 🔯 狮城故转
+      - 🔯 香港故转
+      - 🔯 台湾故转
+      - 🇺🇸 美国节点
+      - 🇯🇵 日本节点
+      - 🇰🇷 韩国节点
+      - 🇸🇬 新加坡节点
+      - 🇭🇰 香港节点
+      - 🇹🇼 台湾节点
+      - ⚡️ 自动选择
+      - 🚀 手动选择
+
+  - name: 🌐 代理网站
+    type: select
+    proxies: *common_proxies
+
+  - name: 🎮 代理游戏
+    type: select
+    proxies: *common_proxies
+
+  - name: 🍎 Apple
+    type: select
+    proxies: *direct_first
+      
+  - name: 💠 Microsoft
+    type: select
+    proxies: *direct_first
+
+  - name: 🐟 漏网之鱼
+    type: select
+    proxies: *common_proxies
+
+# ======= 规则配置 =======
+rules:
+  # 广告拦截
+  - GEOSITE,category-ads-all,REJECT
+
+  # 本地/私有/特殊规则
+  - GEOSITE,private,DIRECT
+  - GEOIP,private,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+
+  # 应用规则 
+  - DOMAIN,lf3-static.bytednsdoc.com,🎵 抖音短视频
+  - DOMAIN,v5-dy-o-abtest.zjcdn.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,amemv.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,douyincdn.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,douyinpic.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,douyinstatic.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,douyinvod.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,idouyinvod.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,ixigua.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,ixiguavideo.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,pstatp.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,snssdk.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,toutiao.com,🎵 抖音短视频
+  - DOMAIN-SUFFIX,manus.im,🤖 ChatGPT
+  - DOMAIN-KEYWORD,manus,🤖 ChatGPT
+
+  # 常用服务分流
+  - GEOSITE,telegram,✈️ Telegram
+  - GEOSITE,category-ai,🤖 ChatGPT
+  - GEOSITE,github,💻 Github
+  - GEOSITE,netflix,🎬 Netflix
+  - GEOSITE,youtube,📹 Youtube
+  - GEOSITE,google,🔍 Google
+  - GEOSITE,apple-cn,DIRECT 
+  - GEOSITE,apple,🍎 Apple
+  - GEOSITE,microsoft-cn,DIRECT 
+  - GEOSITE,microsoft,💠 Microsoft
+
+  # 代理规则 (国外网站)
+  - GEOSITE,gfw,🌐 代理网站
+  - GEOSITE,geolocation-!cn,🌐 代理网站
+
+  # 直连规则 (国内网站)
+  - GEOSITE,cn,DIRECT
+  - GEOIP,cn,DIRECT,no-resolve
+  
+  # 兜底规则
+  - MATCH,🐟 漏网之鱼
