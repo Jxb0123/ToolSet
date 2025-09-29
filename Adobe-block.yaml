@@ -1,0 +1,52 @@
+# Adobe 整合规则
+#
+# 来源:
+# 1. blackmatrix7/ios_rule_script/master/rule/Clash/Adobe/Adobe.yaml
+# 2. Litemerlin.yaml 用户自定义规则
+#
+payload:
+  # blackmatrix7 规则
+  - 'DOMAIN-SUFFIX,adobe.com'
+  - 'DOMAIN-SUFFIX,adobeprojectm.com'
+  - 'DOMAIN-SUFFIX,adobesc.com'
+  - 'DOMAIN-SUFFIX,adobe-identity.com'
+  - 'DOMAIN-SUFFIX,adobelogin.com'
+  - 'DOMAIN-SUFFIX,adobeoobe.com'
+  - 'DOMAIN-SUFFIX,adobexd.com'
+  - 'DOMAIN-SUFFIX,behance.net'
+  - 'DOMAIN-SUFFIX,cloudfront.net'
+  - 'DOMAIN-SUFFIX,ftcdn.net'
+  - 'DOMAIN-SUFFIX,macromedia.com'
+  - 'DOMAIN-SUFFIX,photoshop.com'
+  - 'DOMAIN-SUFFIX,typekit.com'
+  - 'DOMAIN,activate.adobe.com'
+  - 'DOMAIN,adobe-dns-2.adobe.com'
+  - 'DOMAIN,adobe-dns-3.adobe.com'
+  - 'DOMAIN,adobe-dns.adobe.com'
+  - 'DOMAIN,practivate.adobe.com'
+  - 'DOMAIN,ereg.adobe.com'
+  - 'DOMAIN,wip3.adobe.com'
+  # Litemerlin.yaml 用户自定义规则 (已合并去重)
+  - 'DOMAIN-SUFFIX,adobe.io'
+  - 'DOMAIN-SUFFIX,adobedtm.com'
+  - 'DOMAIN-SUFFIX,adobe.ly'
+  - 'DOMAIN-SUFFIX,lcs-cops.adobe.io'
+  - 'DOMAIN-SUFFIX,lc.adobe.com'
+  - 'DOMAIN-SUFFIX,activate-sea.adobe.com'
+  - 'DOMAIN-SUFFIX,3dns-3.adobe.com'
+  - 'DOMAIN-SUFFIX,3dns-2.adobe.com'
+  - 'DOMAIN-SUFFIX,ereg.wip3.adobe.com'
+  - 'DOMAIN-SUFFIX,activate-sjc0.adobe.com'
+  - 'DOMAIN-SUFFIX,cc-api-data.adobe.io'
+  - 'DOMAIN-SUFFIX,cclibraries-api.adobe.io'
+  - 'DOMAIN-SUFFIX,prod.acp.adobeoobe.com'
+  - 'DOMAIN-SUFFIX,k.sni.global.fastly.net'
+  - 'DOMAIN-SUFFIX,swupmf.adobe.com'
+  - 'DOMAIN-SUFFIX,swupdl.adobe.com'
+  - 'DOMAIN-SUFFIX,updates.adobe.com'
+  - 'DOMAIN-SUFFIX,services.adobe.com'
+  - 'DOMAIN-SUFFIX,omtrdc.net'
+  - 'DOMAIN-SUFFIX,2o7.net'
+  - 'DOMAIN-SUFFIX,adobedc.net'
+  - 'DOMAIN-SUFFIX,adobe.demdex.net'
+  - 'DOMAIN-SUFFIX,everest.g.doubleclick.net'

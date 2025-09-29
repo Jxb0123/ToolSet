@@ -1,0 +1,24 @@
+# AI 服务整合规则
+#
+# 来源:
+# 1. blackmatrix7/ios_rule_script/master/rule/Clash/AI/AI.yaml
+# 2. Litemerlin.yaml 用户自定义规则
+#
+payload:
+  # blackmatrix7 规则
+  - 'DOMAIN-SUFFIX,ai.com'
+  - 'DOMAIN-SUFFIX,anthropic.com'
+  - 'DOMAIN-SUFFIX,bard.google.com'
+  - 'DOMAIN-SUFFIX,chatgpt.com'
+  - 'DOMAIN-SUFFIX,claude.ai'
+  - 'DOMAIN-SUFFIX,gemini.google.com'
+  - 'DOMAIN-SUFFIX,openai.com'
+  - 'DOMAIN-SUFFIX,openai.net'
+  - 'DOMAIN-SUFFIX,perplexity.ai'
+  - 'DOMAIN-SUFFIX,oaistatic.com'
+  - 'DOMAIN-SUFFIX,oaiusercontent.com'
+  - 'DOMAIN-SUFFIX,generativelanguage.googleapis.com'
+  - 'DOMAIN-SUFFIX,manus.im'
+  - 'DOMAIN-SUFFIX,manuscdn.com'
+  - 'DOMAIN-SUFFIX,grok.x.ai'
+  - 'DOMAIN-SUFFIX,x.ai'

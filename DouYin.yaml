@@ -1,0 +1,29 @@
+# 抖音 (DouYin) 整合规则
+#
+# 来源:
+# 1. blackmatrix7/ios_rule_script/master/rule/Clash/DouYin/DouYin.yaml
+# 2. Litemerlin.yaml 用户自定义规则
+#
+payload:
+  # blackmatrix7 规则
+  - 'DOMAIN-SUFFIX,amemv.com'
+  - 'DOMAIN-SUFFIX,douyin.com'
+  - 'DOMAIN-SUFFIX,douyincdn.com'
+  - 'DOMAIN-SUFFIX,douyinpic.com'
+  - 'DOMAIN-SUFFIX,douyinstatic.com'
+  - 'DOMAIN-SUFFIX,douyinvod.com'
+  - 'DOMAIN-SUFFIX,iesdouyin.com'
+  - 'DOMAIN-SUFFIX,ixigua.com'
+  - 'DOMAIN-SUFFIX,ixiguavideo.com'
+  - 'DOMAIN-SUFFIX,pstatp.com'
+  - 'DOMAIN-SUFFIX,snssdk.com'
+  - 'DOMAIN-SUFFIX,toutiao.com'
+  - 'DOMAIN-SUFFIX,toutiaocdn.com'
+  - 'DOMAIN-SUFFIX,toutiaocdn.net'
+  - 'DOMAIN-SUFFIX,toutiaohao.com'
+  - 'DOMAIN-SUFFIX,toutiaohao.net'
+  - 'DOMAIN-SUFFIX,toutiaostatic.com'
+  - 'DOMAIN-SUFFIX,toutiaovod.com'
+  - 'DOMAIN-KEYWORD,douyin'
+  # Litemerlin.yaml 用户自定义规则 (已合并去重)
+  - 'DOMAIN-SUFFIX,douyinliving.com'
