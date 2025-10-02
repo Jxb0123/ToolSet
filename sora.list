@@ -1,0 +1,31 @@
+# Sora 分流规则
+# 适用于 Loon
+
+# Sora 主域名
+DOMAIN-SUFFIX,sora.com
+DOMAIN-SUFFIX,openai.com
+
+# Sora 相关域名
+DOMAIN-KEYWORD,sora
+DOMAIN-KEYWORD,openai
+
+# OpenAI API 域名（Sora 使用）
+DOMAIN,api.openai.com
+DOMAIN,chat.openai.com
+DOMAIN,platform.openai.com
+
+# CDN 和静态资源
+DOMAIN-SUFFIX,cdn.openai.com
+DOMAIN-SUFFIX,static.openai.com
+
+# 认证和账户相关
+DOMAIN,auth.openai.com
+DOMAIN,auth0.openai.com
+
+# 其他可能的 Sora 相关域名
+DOMAIN-SUFFIX,oaistatic.com
+DOMAIN-SUFFIX,oaiusercontent.com
+
+# IP 段（根据实际情况可能需要调整）
+IP-CIDR,104.18.0.0/16,no-resolve
+IP-CIDR,172.64.0.0/13,no-resolve
